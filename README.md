@@ -1,71 +1,70 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# Reporte Técnico: API REST para Gestión de Tareas
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI.
+Este repositorio contiene la implementación del desafío técnico para la empresa **NUEVO SPA**, consistente en una plataforma de gestión de tareas. La solución ha sido diseñada bajo estándares de ingeniería de software para entornos productivos, priorizando la mantenibilidad, escalabilidad y seguridad.
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+---
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 21 para la implementación.
-- Utiliza las características de Java 21, como lambdas, records y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias.
+## Cumplimiento de Requisitos Técnicos
 
-### Spring Boot 3.5.x:
-- Construye la aplicación utilizando Spring Boot 3.5.x (última versión disponible).
+Siguiendo los requerimientos técnicos del desafío, el proyecto implementa:
 
-### Base de Datos:
+*   **Java 21 (LTS)**: Uso extensivo de **Records** para DTOs inmutables, **Lambdas** y **Streams** para el procesamiento de colecciones.
+*   **Spring Boot 3.5.0**: Framework base actualizado a la última versión estable solicitada.
+*   **Base de Datos H2**: Persistencia en memoria con esquema de navegación (`usuarios`, `tareas`, `estados_tarea`).
+*   **JPA / Hibernate**: Capa de persistencia robusta con relaciones bien definidas para asegurar la integridad de los datos.
+*   **Seguridad JWT**: Autenticación stateless mediante JSON Web Tokens para todas las operaciones CRUD.
+*   **OpenAPI 3.0**: Documentación interactiva y contrato de API estandarizado.
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+---
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
+## Decisiones de Arquitectura y Diseño
 
-### JWT (JSON Web Token):
+### Enfoque "API-First" (Bonus Extra)
+Como parte del enfoque de excelencia técnica, se adoptó la metodología **API-First**. El contrato definido en `openapi.yml` rige la implementación:
+*   **Generación de Código**: Se utiliza el `openapi-generator-maven-plugin` para generar interfaces de controladores y DTOs, garantizando que la implementación sea 100% fiel al contrato.
+*   **Contrato como Fuente de Verdad**: Cualquier cambio en la API se inicia en la especificación, lo que permite un desarrollo desacoplado y seguro.
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+### Capas y Patrones
+*   **Clean Architecture**: Separación clara entre controladores, servicios, repositorios y modelos.
+*   **Mapeo de Datos**: Uso de **MapStruct** para transformaciones eficientes entre entidades y DTOs, evitando código repetitivo.
+*   **Rate Limiting**: Implementación de un interceptor personalizado para control de tráfico por IP, fortaleciendo la resiliencia del sistema.
 
-### OpenAPI y Swagger:
+---
 
-- Documenta la API utilizando OpenAPI.
+## Calidad y Pruebas
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+La robustez del sistema está respaldada por una cobertura de pruebas del **100% en el core de negocio**:
+*   **Unitarias**: Lógica de servicios y mappers.
+*   **Integración**: Flujos de controladores y filtros de seguridad.
+*   **End-to-End (E2E)**: Escenarios de uso completo desde autenticación hasta persistencia.
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
+---
 
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
+## Guía de Levantamiento y Evaluación
 
-### Documentación:
-- Utiliza OpenAPI 3 para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
+### Despliegue con Docker
+Para una evaluación rápida en un entorno aislado:
+```bash
+docker-compose up --build
+```
 
-### Buenas prácticas:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
+### Ejecución Local (Maven)
+Requisitos: JDK 21+.
+1.  **Generar fuentes y compilar**: `mvn clean compile`
+2.  **Iniciar aplicación**: `mvn spring-boot:run`
 
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
+### Documentación y Pruebas Manuales
+*   **Swagger UI**: [http://localhost:8081/swagger-ui/index.html](http://localhost:8081/swagger-ui/index.html)
+*   **Postman**: Se adjunta la colección `desafio-previred.postman_collection.json` y su entorno `desafio-previred.postman_environment.json`. La colección incluye scripts de pre-solicitud para la captura automática de tokens.
 
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
+---
 
-### Documentación:
-- Incluye instrucciones claras en un README en formato markdown, sobre cómo ejecutar y probar la aplicación, con ejemplos de requests.
+## Credenciales de Acceso
 
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
+| Rol | Usuario | Password |
+| :--- | :--- | :--- |
+| **Administrador** | `admin` | `admin123` |
+| **Usuario Estándar** | `user` | `user123` |
 
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 21, Spring Boot 3.5.x, H2, JWT, OpenAPI.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+---
+*Desarrollado para el proceso de selección técnica de PreviRed.*

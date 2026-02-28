@@ -1,0 +1,23 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "8081:8081"
+      # puerto tcp de h2 — necesario para que el visor se conecte
+      - "9092:9092"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - JWT_SECRET=32chars_secret_key_for_dev_purposes_only
+    restart: always
+
+  # visor web de h2 — disponible en http://localhost:8082
+  # conectarse con: jdbc:h2:tcp://api:9092/mem:desafiodb  usuario: sa  password: password
+  h2-console:
+    image: oscarfonts/h2:latest
+    ports:
+      - "8082:81"
+    environment:
+      - H2_OPTIONS=-ifNotExists
+    depends_on:
+      - api
+    restart: always
