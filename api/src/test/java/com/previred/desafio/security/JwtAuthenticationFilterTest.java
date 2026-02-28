@@ -50,6 +50,7 @@ class JwtAuthenticationFilterTest {
         when(jwtService.extractUsername(token)).thenReturn(username);
         when(userDetailsService.loadUserByUsername(username)).thenReturn(userDetails);
         when(jwtService.isTokenValid(token, userDetails)).thenReturn(true);
+        when(taskService.getAllTasks(any(), any())).thenReturn(new org.springframework.data.domain.PageImpl<>(java.util.Collections.emptyList()));
 
         mockMvc.perform(get("/api/tasks")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))

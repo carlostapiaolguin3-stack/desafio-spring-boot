@@ -49,7 +49,9 @@ public class AuthController implements AuthenticationApi {
         
         AuthResponse response = new AuthResponse();
         response.setToken(serviceResponse.token());
-        response.setType("Bearer"); // Default value as it's not in serviceResponse record
+        response.setUsername(serviceResponse.username());
+        response.setRole(serviceResponse.role());
+        response.setType("Bearer");
         
         return ResponseEntity.ok(response);
     }

@@ -129,8 +129,10 @@ components:
       properties:
         username:
           type: string
+          minLength: 1
         password:
           type: string
+          minLength: 1
       required:
         - username
         - password
@@ -139,6 +141,10 @@ components:
       type: object
       properties:
         token:
+          type: string
+        username:
+          type: string
+        role:
           type: string
         type:
           type: string
